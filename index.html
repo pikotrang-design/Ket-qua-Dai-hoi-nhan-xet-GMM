@@ -4,49 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tổng Kết GMM</title>
+    <!-- Thêm thư viện vẽ biểu đồ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1, h2 { color: #d32f2f; text-align: center; }
-        .section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: transparent; }
+        
+        .header-title { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-top: 8px solid #d32f2f; margin-bottom: 20px; text-align: center; }
+        .header-title h1 { color: #d32f2f; margin: 0; }
+        
+        .section { background: #fff; margin-bottom: 20px; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section h2 { color: #1976d2; border-bottom: 2px solid #e3f2fd; padding-bottom: 10px; margin-top: 0;}
+        
+        /* Cột Top 5 */
         .top5-list { list-style: none; padding: 0; }
-        .top5-list li { background: #ffebee; margin: 5px 0; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; font-weight: bold; }
-        .match-box { background: #e3f2fd; padding: 20px; border-radius: 8px; text-align: center; }
-        input[type="text"], input[type="password"] { padding: 10px; margin: 5px; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 10px 20px; background: #1976d2; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .top5-list li { background: #fff3e0; margin: 8px 0; padding: 12px 20px; border-radius: 8px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; color: #e65100; border: 1px solid #ffe0b2;}
+        
+        /* Trạm Match */
+        .match-box { background: #e3f2fd; border: 1px solid #bbdefb; }
+        .match-box h2 { color: #1565c0; border-bottom: none;}
+        input[type="text"], input[type="password"] { padding: 12px; margin: 8px 0; width: 100%; max-width: 350px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;}
+        button { padding: 12px 24px; background: #1976d2; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; transition: 0.3s;}
         button:hover { background: #1565c0; }
         #match-result { margin-top: 15px; font-weight: bold; color: #2e7d32; font-size: 1.2em; }
+        
+        /* Từng câu hỏi (Khối kết quả) */
+        .result-block { margin-bottom: 30px; }
+        .result-block h3 { color: #333; font-size: 1.1em; margin-bottom: 10px; }
+        .avg-score { font-weight: bold; color: #d32f2f; font-size: 1.2em; margin-bottom: 15px; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        
+        /* List câu trả lời chữ */
+        .text-responses { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; background: #fafafa; border: 1px solid #eee; border-radius: 8px;}
+        .text-responses li { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 0.95em; line-height: 1.5; }
+        .text-responses li:last-child { border-bottom: none; }
+        .text-responses li::before { content: "💬 "; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🎉 Kết Quả Đại Hội Nhận Xét GMM 🎉</h1>
+    <div class="header-title">
+        <h1>🎉 Kết Quả Đại Hội Nhận Xét GMM 🎉</h1>
+    </div>
     
     <!-- Mục Top 5 -->
     <div class="section">
-        <h2>🏆 Top 5 "Muốn Lắm Ạ"</h2>
+        <h2>🏆 Top 5 "Muốn Lắm Ạ" Nhất Nhóm</h2>
         <ul class="top5-list" id="top5-container">
-            <li>Đang tải dữ liệu...</li>
+            <li>Đang phân tích tín hiệu vũ trụ...</li>
         </ul>
     </div>
 
     <!-- Mục Tra cứu Match -->
-    <div class="section match-box">
+    <div class="section match-box" style="text-align: center;">
         <h2>❤️ Trạm Match Bạn Chung Đường ❤️</h2>
         <p>Nhập tên và mật mã bí mật của bạn để xem ai đã "match" với mình nhé!</p>
         <input type="text" id="username" placeholder="Nhập tên của bạn (VD: Thúi Thúi)"><br>
         <input type="password" id="password" placeholder="Mật mã bí mật"><br>
-        <button onclick="checkMatch()">Tra Cứu</button>
+        <button onclick="checkMatch()">Tra Cứu Match</button>
         <div id="match-result"></div>
+    </div>
+
+    <!-- Toàn bộ kết quả -->
+    <div class="section">
+        <h2>📊 Chi Tiết Đánh Giá Từ Các Thành Viên</h2>
+        <div id="all-results-container">Đang tải dữ liệu từ Google Form...</div>
     </div>
 </div>
 
 <script>
-    // THAY ĐƯỜNG LINK APPS SCRIPT CỦA BẠN VÀO ĐÂY
+    // ĐIỀN ĐƯỜNG LINK CỦA BẠN VÀO ĐÂY (Giữ nguyên link bạn đã copy ở bước trước)
     const API_URL = "https://script.google.com/macros/s/AKfycbzh3bVDYF5o_ToASq6HkWPxJEgG5S5dSUU3luaKgGNUBGP6TKc36caTc3FSkfhBVBa61g/exec";
 
-    // Hàm gọi API lấy Top 5
+    // 1. Load Top 5
     async function loadTop5() {
         try {
             const response = await fetch(`${API_URL}?action=getTop5`);
@@ -56,26 +87,114 @@
                 container.innerHTML = '';
                 data.data.forEach((person, index) => {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span>#${index + 1} ${person.name}</span> <span>${person.votes} lượt</span>`;
+                    li.innerHTML = `<span>#${index + 1} ${person.name}</span> <span>${person.votes} lượt muốn làm chung</span>`;
                     container.appendChild(li);
                 });
             }
         } catch (error) {
-            document.getElementById('top5-container').innerHTML = "<li>Lỗi không tải được dữ liệu.</li>";
+            document.getElementById('top5-container').innerHTML = "<li>Lỗi không tải được dữ liệu Top 5.</li>";
         }
     }
 
-    // Hàm kiểm tra Match
+    // 2. Load Toàn bộ dữ liệu
+    async function loadAllData() {
+        try {
+            const response = await fetch(`${API_URL}?action=getAllData`);
+            const data = await response.json();
+            if (data.status === "success") {
+                const container = document.getElementById('all-results-container');
+                container.innerHTML = '';
+                
+                const headers = data.headers;
+                const rows = data.rows;
+                
+                headers.forEach((header, colIndex) => {
+                    // Trích xuất các câu trả lời hợp lệ cho cột hiện tại
+                    let colValues = rows.map(r => r[colIndex]).filter(v => v !== "" && v !== null);
+                    if (colValues.length === 0) return;
+                    
+                    // Kiểm tra xem cột này có phải toàn là số (để vẽ biểu đồ) hay không
+                    let isNumeric = colValues.every(v => !isNaN(v) && v !== "");
+                    
+                    const block = document.createElement('div');
+                    block.className = 'result-block';
+                    
+                    const title = document.createElement('h3');
+                    title.innerText = header;
+                    block.appendChild(title);
+                    
+                    if (isNumeric) {
+                        // Tính điểm trung bình
+                        let sum = colValues.reduce((a, b) => a + Number(b), 0);
+                        let avg = (sum / colValues.length).toFixed(1); // Lấy 1 chữ số thập phân
+                        
+                        const avgText = document.createElement('div');
+                        avgText.className = 'avg-score';
+                        avgText.innerText = `Điểm trung bình: ${avg} / 10`;
+                        block.appendChild(avgText);
+                        
+                        // Đếm số lượng các mức điểm để vẽ biểu đồ
+                        let counts = {};
+                        // Tạo sẵn mốc từ 1 đến 10
+                        for(let i=1; i<=10; i++) counts[i] = 0;
+                        colValues.forEach(v => { counts[Number(v)] = (counts[Number(v)] || 0) + 1; });
+                        
+                        // Vẽ biểu đồ
+                        const chartDiv = document.createElement('div');
+                        chartDiv.className = 'chart-container';
+                        const canvas = document.createElement('canvas');
+                        chartDiv.appendChild(canvas);
+                        block.appendChild(chartDiv);
+                        container.appendChild(block);
+                        
+                        new Chart(canvas, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(counts),
+                                datasets: [{
+                                    label: 'Số lượng bình chọn',
+                                    data: Object.values(counts),
+                                    backgroundColor: '#4285f4',
+                                    borderRadius: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                                plugins: { legend: { display: false } }
+                            }
+                        });
+                    } else {
+                        // Trả lời dạng Text
+                        const ul = document.createElement('ul');
+                        ul.className = 'text-responses';
+                        colValues.forEach(v => {
+                            const li = document.createElement('li');
+                            li.innerText = v;
+                            ul.appendChild(li);
+                        });
+                        block.appendChild(ul);
+                        container.appendChild(block);
+                    }
+                });
+            }
+        } catch (error) {
+            document.getElementById('all-results-container').innerHTML = "Lỗi khi tải toàn bộ dữ liệu form.";
+            console.error(error);
+        }
+    }
+
+    // 3. Hàm kiểm tra Match (Người dùng thao tác)
     async function checkMatch() {
-        const name = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
+        const name = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
         const resultDiv = document.getElementById('match-result');
         
         if(!name || !pass) {
-            resultDiv.innerHTML = "<span style='color:red;'>Vui lòng nhập đủ thông tin!</span>";
+            resultDiv.innerHTML = "<span style='color:#d32f2f;'>Vui lòng nhập đủ thông tin!</span>";
             return;
         }
-
         resultDiv.innerHTML = "Đang kiểm tra tín hiệu vũ trụ...";
 
         try {
@@ -83,17 +202,20 @@
             const data = await response.json();
             
             if (data.status === "success") {
-                resultDiv.innerHTML = `Tèn ten! Những người bạn đã match thành công: <br> <b>${data.matchResult}</b>`;
+                resultDiv.innerHTML = `Tèn ten! Những người bạn đã match thành công: <br> <span style="color:#d32f2f; font-size: 1.3em;">${data.matchResult}</span>`;
             } else {
-                resultDiv.innerHTML = `<span style='color:red;'>${data.message}</span>`;
+                resultDiv.innerHTML = `<span style='color:#d32f2f;'>${data.message}</span>`;
             }
         } catch (error) {
-            resultDiv.innerHTML = "<span style='color:red;'>Có lỗi xảy ra, thử lại sau nhé!</span>";
+            resultDiv.innerHTML = "<span style='color:#d32f2f;'>Có lỗi xảy ra, thử lại sau nhé!</span>";
         }
     }
 
-    // Tự động tải Top 5 khi mở web
-    window.onload = loadTop5;
+    // Chạy khi mở web
+    window.onload = () => {
+        loadTop5();
+        loadAllData();
+    };
 </script>
 
 </body>
