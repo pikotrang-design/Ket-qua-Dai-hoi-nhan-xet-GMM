@@ -4,118 +4,299 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tổng Kết GMM</title>
-    <!-- Thêm thư viện vẽ biểu đồ -->
+    <!-- Thư viện Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Thêm Font chữ Google (Be Vietnam Pro) -->
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ĐỔI FONT CHỮ VÀ HÌNH NỀN Ở ĐÂY */
         body { 
-            font-family: 'Be Vietnam Pro', sans-serif; /* Đã đổi font chữ mới */
+            font-family: 'Be Vietnam Pro', sans-serif; 
             color: #333; 
             margin: 0; 
-            padding: 20px; 
-            
-            /* -- CÁCH ĐỔI HÌNH NỀN -- 
-               Hiện tại mình đang để nền dải màu gradient mờ mờ cho dễ nhìn. 
-               Nếu bạn muốn dùng ảnh thật, hãy xóa dấu /* ở dòng dưới và dán link ảnh của bạn vào nhé: */
-            /* background-image: url('LINK_ẢNH_CỦA_BẠN_DÁN_VÀO_ĐÂY'); */
-            
+            padding: 0;
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             background-size: cover;
             background-attachment: fixed;
+            overflow-x: hidden;
         }
-        
-        .container { max-width: 900px; margin: auto; background: transparent; }
-        
-        .header-title { background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid #d32f2f; margin-bottom: 25px; text-align: center; }
-        .header-title h1 { color: #d32f2f; margin: 0; }
-        
-        .section { background: rgba(255, 255, 255, 0.95); margin-bottom: 25px; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .section h2 { color: #1976d2; border-bottom: 2px solid #e3f2fd; padding-bottom: 12px; margin-top: 0;}
-        
-        /* HIỆU ỨNG ĐỘNG (ANIMATIONS) */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-up {
-            opacity: 0; /* Ẩn đi trước khi chạy hiệu ứng */
-            animation: slideUp 0.8s ease-out forwards;
-        }
-        /* Độ trễ để các khối hiện lên lần lượt */
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
 
-        /* Cột Top 5 */
+        /* ---------------- HIỆU ỨNG ĐỘNG (ANIMATIONS) ---------------- */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes floatReverse {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(25px) rotate(-5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 82, 82, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ---------------- TRANG WELCOME ---------------- */
+        #welcome-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+            z-index: 10;
+        }
+        .welcome-title {
+            font-size: 3em;
+            color: #d32f2f;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            margin-bottom: 10px;
+            padding: 0 20px;
+        }
+        .welcome-subtitle {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 40px;
+            animation: popIn 1s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+        .version-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: popIn 1s ease-out 0.6s forwards;
+            opacity: 0;
+            z-index: 20;
+        }
+        .btn-ver {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: 900;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-ver:hover { transform: translateY(-5px) scale(1.05); }
+        
+        /* Màu cho từng nút */
+        .btn-ver1 { background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%); box-shadow: 0 10px 20px rgba(161, 140, 209, 0.4); }
+        .btn-ver2 { background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4); }
+        .btn-ver3 { background: linear-gradient(45deg, #ff0844 0%, #ffb199 100%); animation: pulseGlow 2s infinite; }
+
+        /* HÌNH ẢNH LƯỢN LỜ (Thay link ảnh của bạn vào src) */
+        .floating-img { position: absolute; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); z-index: 1; object-fit: cover;}
+        .img1 { top: 10%; left: 5%; width: 120px; height: 120px; animation: float 6s ease-in-out infinite; }
+        .img2 { top: 20%; right: 8%; width: 150px; height: 150px; animation: floatReverse 7s ease-in-out infinite; }
+        .img3 { bottom: 15%; left: 10%; width: 140px; height: 140px; animation: floatReverse 5s ease-in-out infinite; }
+        .img4 { bottom: 10%; right: 12%; width: 110px; height: 110px; animation: float 8s ease-in-out infinite; }
+
+        /* ---------------- TRANG KẾT QUẢ ---------------- */
+        #results-page { display: none; padding: 20px; max-width: 900px; margin: auto; }
+        
+        .header-title { background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); border-top: 8px solid #d32f2f; margin-bottom: 25px; text-align: center; }
+        .header-title h1 { color: #d32f2f; margin: 0; font-size: 2.2em; }
+        
+        .section { background: rgba(255, 255, 255, 0.95); margin-bottom: 30px; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .section h2 { color: #1976d2; border-bottom: 2px dashed #bbdefb; padding-bottom: 12px; margin-top: 0; font-size: 1.6em;}
+        
+        /* Khối hiển thị khi load */
+        .animate-pop { opacity: 0; animation: popIn 0.8s ease-out forwards; }
+        
+        /* Nút quay lại */
+        .back-btn { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; font-family: inherit; transition: 0.3s; }
+        .back-btn:hover { background: #333; transform: translateX(-5px); }
+
+        /* Top 5 */
         .top5-list { list-style: none; padding: 0; }
-        .top5-list li { background: #fff3e0; margin: 10px 0; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; color: #e65100; border: 1px solid #ffe0b2; transition: transform 0.2s;}
-        .top5-list li:hover { transform: scale(1.02); } /* Hiệu ứng phình to khi rà chuột */
+        .top5-list li { background: #fff3e0; margin: 12px 0; padding: 15px 20px; border-radius: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em; color: #e65100; border-left: 6px solid #ff9800; transition: all 0.3s;}
+        .top5-list li:hover { transform: scale(1.03) translateX(10px); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2); }
         
         /* Trạm Match */
-        .match-box { background: #e3f2fd; border: 1px solid #bbdefb; }
+        .match-box { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: none; }
         .match-box h2 { color: #1565c0; border-bottom: none;}
-        input[type="text"], input[type="password"] { padding: 12px; margin: 10px 0; width: 100%; max-width: 350px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit;}
-        button { padding: 12px 28px; background: #1976d2; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.05em; transition: 0.3s; font-family: inherit;}
-        button:hover { background: #1565c0; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        #match-result { margin-top: 15px; font-weight: bold; color: #2e7d32; font-size: 1.2em; }
+        input[type="text"], input[type="password"] { padding: 15px; margin: 10px 0; width: 100%; max-width: 350px; border: 2px solid #fff; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 1em; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); outline: none; transition: 0.3s;}
+        input[type="text"]:focus, input[type="password"]:focus { border-color: #1976d2; }
+        .btn-match { padding: 15px 35px; background: #1976d2; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; margin-top: 10px;}
+        .btn-match:hover { background: #1565c0; transform: scale(1.05); box-shadow: 0 5px 15px rgba(25, 118, 210, 0.3);}
+        #match-result { margin-top: 20px; font-weight: bold; font-size: 1.3em; animation: popIn 0.5s ease-out; }
         
-        /* Từng câu hỏi (Khối kết quả) */
-        .result-block { margin-bottom: 35px; }
-        .result-block h3 { color: #333; font-size: 1.15em; margin-bottom: 12px; }
-        .avg-score { font-weight: bold; color: #d32f2f; font-size: 1.2em; margin-bottom: 15px; }
-        .chart-container { position: relative; height: 320px; width: 100%; }
+        /* Từng câu hỏi */
+        .result-block { margin-bottom: 40px; padding: 20px; background: #fafafa; border-radius: 12px; border-left: 5px solid #4caf50; transition: 0.3s; }
+        .result-block:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-3px); }
+        .result-block h3 { color: #2e7d32; font-size: 1.25em; margin-bottom: 15px; margin-top: 0; }
+        .avg-score { font-weight: bold; color: #d32f2f; font-size: 1.3em; margin-bottom: 15px; background: #ffebee; display: inline-block; padding: 5px 15px; border-radius: 20px; }
+        .chart-container { position: relative; height: 320px; width: 100%; margin-top: 15px;}
         
-        /* List câu trả lời chữ */
-        .text-responses { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; background: #fafafa; border: 1px solid #eee; border-radius: 8px;}
-        .text-responses li { padding: 15px; border-bottom: 1px solid #eee; font-size: 0.95em; line-height: 1.6; transition: background 0.2s;}
-        .text-responses li:hover { background: #f0f0f0; }
-        .text-responses li:last-child { border-bottom: none; }
-        .text-responses li::before { content: "💬 "; }
+        .text-responses { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
+        .text-responses li { padding: 15px; border-bottom: 1px dashed #ddd; font-size: 1em; line-height: 1.6; animation: slideInRight 0.5s ease-out; }
+        .text-responses li:hover { background: #fff; border-radius: 8px; }
+        
+        /* Cuộn mượt cho danh sách */
+        .text-responses::-webkit-scrollbar { width: 8px; }
+        .text-responses::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        .text-responses::-webkit-scrollbar-thumb:hover { background: #aaa; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-title animate-up">
-        <h1>🎉 Kết Quả Đại Hội Nhận Xét GMM 🎉</h1>
-    </div>
+<!-- ================= TRANG WELCOME ================= -->
+<div id="welcome-page">
+    <h1 class="welcome-title">✨ Chào mừng đến với Đại Hội Nhận Xét GMM ✨</h1>
+    <p class="welcome-subtitle">Cuộc vui nào rồi cũng đến lúc lên thớt. Chọn một phiên bản để khám phá nhé! 👇</p>
     
-    <!-- ĐÃ DỜI LÊN TRÊN: Toàn bộ kết quả -->
-    <div class="section animate-up delay-1">
-        <h2>📊 Chi Tiết Đánh Giá Từ Các Thành Viên</h2>
-        <div id="all-results-container">Đang tải dữ liệu từ Google Form...</div>
+    <div class="version-buttons">
+        <button class="btn-ver btn-ver1" onclick="loadVersion('ver1')">🌸 VER 1</button>
+        <button class="btn-ver btn-ver2" onclick="loadVersion('ver2')">💦 VER 2</button>
+        <button class="btn-ver btn-ver3" onclick="loadVersion('ver3')">🔥 VER 3</button>
     </div>
 
-    <!-- ĐÃ DỜI XUỐNG DƯỚI: Mục Top 5 -->
-    <div class="section animate-up delay-2">
-        <h2>🏆 Top 5 "Muốn Lắm Ạ" Nhất Nhóm</h2>
+    <!-- CÁC HÌNH ẢNH LƯỢN LỜ: BẠN THAY ĐƯỜNG LINK ẢNH VÀO CHỖ CÓ CHỮ LINK_ANH NHÉ -->
+    <img src="https://photos.app.goo.gl/pAvk4HxcFfw8Rf9cA" class="floating-img img1" alt="Decor 1">
+    <img src="https://photos.app.goo.gl/Waz4y2M6LZhY6bps7" class="floating-img img2" alt="Decor 2">
+    <img src="https://photos.app.goo.gl/4VuEh5nuPVJLaMwaA" class="floating-img img3" alt="Decor 3">
+    <img src="https://photos.app.goo.gl/iFQPso3bR6D1KtCE6" class="floating-img img4" alt="Decor 4">
+</div>
+
+<!-- ================= TRANG KẾT QUẢ ================= -->
+<div id="results-page">
+    <button class="back-btn" onclick="goBack()">🔙 Quay lại trang chủ</button>
+
+    <div class="header-title animate-pop">
+        <h1 id="page-title">🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉</h1>
+    </div>
+    
+    <!-- Toàn bộ kết quả -->
+    <div class="section animate-pop" style="animation-delay: 0.2s;">
+        <h2>💬 Chi Tiết Đánh Giá Từ Các Thành Viên 📝</h2>
+        <div id="all-results-container">Đang tải dữ liệu, chờ xíu nha... ⏳</div>
+    </div>
+
+    <!-- Mục Top 5 -->
+    <div class="section animate-pop" style="animation-delay: 0.4s;">
+        <h2>🏆 Top 5 "Muốn Lắm Ạ" Nhất Nhóm 🌟</h2>
         <ul class="top5-list" id="top5-container">
-            <li>Đang phân tích tín hiệu vũ trụ...</li>
+            <li>Đang phân tích tín hiệu vũ trụ... 🚀</li>
         </ul>
     </div>
 
-    <!-- ĐÃ DỜI XUỐNG CUỐI CÙNG: Mục Tra cứu Match -->
-    <div class="section match-box animate-up delay-3" style="text-align: center;">
-        <h2>❤️ Trạm Match Bạn Chung Đường ❤️</h2>
-        <p>Nhập tên và mật mã bí mật của bạn để xem ai đã "match" với mình nhé!</p>
+    <!-- Mục Tra cứu Match -->
+    <div class="section match-box animate-pop" style="animation-delay: 0.6s; text-align: center;">
+        <h2>❤️ Trạm Match Bạn Chung Đường 💖</h2>
+        <p>Nhập tên và mật mã bí mật của bạn để xem ai đã "match" với mình nhé! 🫣</p>
         <input type="text" id="username" placeholder="Nhập tên của bạn (VD: Thúi Thúi)"><br>
         <input type="password" id="password" placeholder="Mật mã bí mật"><br>
-        <button onclick="checkMatch()">Tra Cứu Match</button>
+        <button class="btn-match" onclick="checkMatch()">Tra Cứu Tín Hiệu 📡</button>
         <div id="match-result"></div>
     </div>
 </div>
 
+<!-- ================= JAVASCRIPT ================= -->
 <script>
-    // ĐIỀN ĐƯỜNG LINK APPS SCRIPT CỦA BẠN VÀO ĐÂY NHÉ:
-    const API_URL = "https://script.google.com/macros/s/AKfycbzh3bVDYF5o_ToASq6HkWPxJEgG5S5dSUU3luaKgGNUBGP6TKc36caTc3FSkfhBVBa61g/exec";
+    // --- DANH SÁCH LINK API CỦA TỪNG VERSION ---
+    // Sau này bạn có link Ver 1 và 2 thì thay vào chỗ "LINK_API_VER_..." nhé
+    const API_VER1 = "https://script.google.com/macros/s/AKfycby4oTa2VsIc6PXC5XEwLhFyCEW9zcQDcNbE-EdmCO5MuEHArHVE_VNN7sPs3es814DX/exec";
+    const API_VER2 = "https://script.google.com/macros/s/AKfycbwi8VZRPqBbA0zXiVQDu-bUREcPRxpsq69aMbxWL2TgQskOQaOVdselfjuXB8oW0Pm6ow/exec"; 
+    const API_VER3 = "https://script.google.com/macros/s/AKfycbzh3bVDYF5o_ToASq6HkWPxJEgG5S5dSUU3luaKgGNUBGP6TKc36caTc3FSkfhBVBa61g/exec";
 
-    // 1. Load Toàn bộ dữ liệu
+    let currentAPI = "";
+
+    // Hàm chuyển đổi sang trang kết quả
+    // Hàm chuyển đổi sang trang kết quả
+    function loadVersion(ver) {
+        let titleElement = document.getElementById('page-title');
+        let matchBox = document.querySelector('.match-box'); // Lấy khối Trạm Match
+        
+        if (ver === 'ver1') {
+            currentAPI = API_VER1;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 1 🎉";
+            matchBox.style.display = 'none'; // Ẩn trạm match
+        } else if (ver === 'ver2') {
+            currentAPI = API_VER2;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 2 🎉";
+            matchBox.style.display = 'none'; // Ẩn trạm match
+        } else {
+            currentAPI = API_VER3;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉";
+            matchBox.style.display = 'block'; // Hiện trạm match cho Ver 3
+        }
+
+        // Báo lỗi nếu Ver 1, Ver 2 chưa được gắn link
+        if(currentAPI.includes("LINK_API")) {
+            alert("Oops! 🫣 Phiên bản này hiện chưa có dữ liệu. Bạn hãy gắn link API vào code nhé!");
+            return;
+        }
+
+        // Ẩn trang Welcome, Hiện trang Kết quả
+        document.getElementById('welcome-page').style.display = 'none';
+        document.getElementById('results-page').style.display = 'block';
+        
+        // Reset nội dung cũ để load mới
+        document.getElementById('all-results-container').innerHTML = "Đang tải dữ liệu, chờ xíu nha... ⏳";
+        document.getElementById('top5-container').innerHTML = "<li>Đang phân tích tín hiệu vũ trụ... 🚀</li>";
+        document.getElementById('match-result').innerHTML = "";
+        
+        // Bắt đầu tải dữ liệu
+        loadAllData();
+        loadTop5();
+    } {
+        let titleElement = document.getElementById('page-title');
+        
+        if (ver === 'ver1') {
+            currentAPI = API_VER1;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 1 🎉";
+        } else if (ver === 'ver2') {
+            currentAPI = API_VER2;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 2 🎉";
+        } else {
+            currentAPI = API_VER3;
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉";
+        }
+
+        // Báo lỗi nếu Ver 1, Ver 2 chưa được gắn link
+        if(currentAPI.includes("LINK_API")) {
+            alert("Oops! 🫣 Phiên bản này hiện chưa có dữ liệu. Bạn hãy gắn link API vào code nhé!");
+            return;
+        }
+
+        // Ẩn trang Welcome, Hiện trang Kết quả
+        document.getElementById('welcome-page').style.display = 'none';
+        document.getElementById('results-page').style.display = 'block';
+        
+        // Reset nội dung cũ để load mới
+        document.getElementById('all-results-container').innerHTML = "Đang tải dữ liệu, chờ xíu nha... ⏳";
+        document.getElementById('top5-container').innerHTML = "<li>Đang phân tích tín hiệu vũ trụ... 🚀</li>";
+        document.getElementById('match-result').innerHTML = "";
+        
+        // Bắt đầu tải dữ liệu
+        loadAllData();
+        loadTop5();
+    }
+
+    // Hàm quay lại
+    function goBack() {
+        document.getElementById('results-page').style.display = 'none';
+        document.getElementById('welcome-page').style.display = 'flex';
+    }
+
+    // Load Toàn bộ dữ liệu
     async function loadAllData() {
         try {
-            const response = await fetch(`${API_URL}?action=getAllData`);
+            const response = await fetch(`${currentAPI}?action=getAllData`);
             const data = await response.json();
             if (data.status === "success") {
                 const container = document.getElementById('all-results-container');
@@ -125,7 +306,7 @@
                 const rows = data.rows;
                 
                 headers.forEach((header, colIndex) => {
-                    // LỆNH ẨN CÂU HỎI "BẠN TÊN LÀ?" (Nếu tiêu đề chứa chữ "tên là" thì bỏ qua)
+                    // Ẩn câu hỏi Tên
                     if (header.toLowerCase().includes("bạn tên là")) return;
 
                     let colValues = rows.map(r => r[colIndex]).filter(v => v !== "" && v !== null);
@@ -136,8 +317,12 @@
                     const block = document.createElement('div');
                     block.className = 'result-block';
                     
+                    // Thêm icon ngẫu nhiên cho vui mắt
+                    const emojis = ['✨', '🔥', '💡', '📌', '🎯', '🍀'];
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    
                     const title = document.createElement('h3');
-                    title.innerText = header;
+                    title.innerText = `${randomEmoji} ${header}`;
                     block.appendChild(title);
                     
                     if (isNumeric) {
@@ -146,7 +331,7 @@
                         
                         const avgText = document.createElement('div');
                         avgText.className = 'avg-score';
-                        avgText.innerText = `Điểm trung bình: ${avg} / 10`;
+                        avgText.innerText = `📈 Điểm trung bình: ${avg} / 10`;
                         block.appendChild(avgText);
                         
                         let counts = {};
@@ -165,25 +350,28 @@
                             data: {
                                 labels: Object.keys(counts),
                                 datasets: [{
-                                    label: 'Số lượng bình chọn',
+                                    label: 'Số lượt',
                                     data: Object.values(counts),
-                                    backgroundColor: '#ff7675', // Đổi màu cột biểu đồ cho xinh xắn hơn
-                                    borderRadius: 6
+                                    backgroundColor: '#ff6b81', 
+                                    borderRadius: 8
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: false,
                                 scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
-                                plugins: { legend: { display: false } }
+                                plugins: { legend: { display: false } },
+                                animation: { duration: 2000, easing: 'easeOutQuart' } // Đồ thị mọc lên sinh động
                             }
                         });
                     } else {
                         const ul = document.createElement('ul');
                         ul.className = 'text-responses';
-                        colValues.forEach(v => {
+                        colValues.forEach((v, index) => {
                             const li = document.createElement('li');
-                            li.innerText = v;
+                            // Delay từng câu trả lời để có hiệu ứng trượt ra lần lượt
+                            li.style.animationDelay = `${index * 0.05}s`;
+                            li.innerHTML = `👉 <b>Phản hồi:</b> ${v}`;
                             ul.appendChild(li);
                         });
                         block.appendChild(ul);
@@ -192,60 +380,56 @@
                 });
             }
         } catch (error) {
-            document.getElementById('all-results-container').innerHTML = "Lỗi khi tải toàn bộ dữ liệu form.";
+            document.getElementById('all-results-container').innerHTML = "Lỗi khi tải dữ liệu form. Bạn thử lại nhé!";
         }
     }
 
-    // 2. Load Top 5
+    // Load Top 5
     async function loadTop5() {
         try {
-            const response = await fetch(`${API_URL}?action=getTop5`);
+            const response = await fetch(`${currentAPI}?action=getTop5`);
             const data = await response.json();
             if (data.status === "success") {
                 const container = document.getElementById('top5-container');
                 container.innerHTML = '';
+                
+                const medals = ['🥇', '🥈', '🥉', '🏅', '🏅'];
                 data.data.forEach((person, index) => {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span>#${index + 1} ${person.name}</span> <span>${person.votes} lượt muốn làm chung</span>`;
+                    li.innerHTML = `<span>${medals[index]} #${index + 1} ${person.name}</span> <span>${person.votes} lượt 💘</span>`;
                     container.appendChild(li);
                 });
             }
         } catch (error) {
-            document.getElementById('top5-container').innerHTML = "<li>Lỗi không tải được dữ liệu Top 5.</li>";
+            document.getElementById('top5-container').innerHTML = "<li>Lỗi tải dữ liệu Top 5 🥲</li>";
         }
     }
 
-    // 3. Kiểm tra Match
+    // Kiểm tra Match
     async function checkMatch() {
         const name = document.getElementById('username').value.trim();
         const pass = document.getElementById('password').value.trim();
         const resultDiv = document.getElementById('match-result');
         
         if(!name || !pass) {
-            resultDiv.innerHTML = "<span style='color:#d32f2f;'>Vui lòng nhập đủ thông tin!</span>";
+            resultDiv.innerHTML = "<span style='color:#d32f2f;'>⚠️ Vui lòng nhập đủ thông tin!</span>";
             return;
         }
-        resultDiv.innerHTML = "Đang kiểm tra tín hiệu vũ trụ...";
+        resultDiv.innerHTML = "Đang kiểm tra tín hiệu vũ trụ... 🔮";
 
         try {
-            const response = await fetch(`${API_URL}?action=getMatch&name=${encodeURIComponent(name)}&pass=${encodeURIComponent(pass)}`);
+            const response = await fetch(`${currentAPI}?action=getMatch&name=${encodeURIComponent(name)}&pass=${encodeURIComponent(pass)}`);
             const data = await response.json();
             
             if (data.status === "success") {
-                resultDiv.innerHTML = `Tèn ten! Những người bạn đã match thành công: <br> <span style="color:#d32f2f; font-size: 1.3em;">${data.matchResult}</span>`;
+                resultDiv.innerHTML = `🎉 Tèn ten! Những người bạn đã match thành công: <br> <span style="color:#d32f2f; font-size: 1.3em;">💖 ${data.matchResult} 💖</span>`;
             } else {
-                resultDiv.innerHTML = `<span style='color:#d32f2f;'>${data.message}</span>`;
+                resultDiv.innerHTML = `<span style='color:#d32f2f;'>❌ ${data.message}</span>`;
             }
         } catch (error) {
-            resultDiv.innerHTML = "<span style='color:#d32f2f;'>Có lỗi xảy ra, thử lại sau nhé!</span>";
+            resultDiv.innerHTML = "<span style='color:#d32f2f;'>🔌 Có lỗi kết nối, thử lại sau nhé!</span>";
         }
     }
-
-    // Chạy khi mở web
-    window.onload = () => {
-        loadAllData();
-        loadTop5();
-    };
 </script>
 
 </body>
