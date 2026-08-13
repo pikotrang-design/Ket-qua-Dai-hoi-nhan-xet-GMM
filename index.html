@@ -55,11 +55,16 @@
             position: relative;
             text-align: center;
             z-index: 10;
+            /* Thêm lệnh này để cắt nửa dưới của ảnh 4 tràn ra ngoài */
+            overflow: hidden; 
         }
         .welcome-title {
             font-size: 3em;
-            color: #d32f2f;
-            text-shadow: 2px 3px 8px rgba(0,0,0,0.3);
+            color: #ff5252; /* Màu đỏ sáng hơn */
+            /* Bóng trắng dày dặn và phát sáng mạnh */
+            text-shadow: 
+                -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff, 
+                0 0 15px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.8);
             position: relative;
             z-index: 5;
             animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -69,7 +74,11 @@
         .welcome-subtitle {
             font-size: 1.2em;
             color: #333; 
-            text-shadow: 1px 1px 3px rgba(255,255,255,0.8), 1px 2px 5px rgba(0,0,0,0.2);
+            font-weight: 700;
+            /* Bóng trắng cường độ cực mạnh cho chữ mô tả */
+            text-shadow: 
+                -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 
+                0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
             position: relative;
             z-index: 5;
             margin-bottom: 40px;
@@ -103,12 +112,13 @@
         .btn-ver3 { background: linear-gradient(45deg, #ff0844 0%, #ffb199 100%); animation: pulseGlow 2s infinite; }
 
         /* HÌNH ẢNH LƯỢN LỜ */
-        /* Giữ nguyên tỉ lệ ảnh (height: auto), không tràn viền, đè nhau tự nhiên */
         .floating-img { position: absolute; z-index: 1; pointer-events: none; height: auto; }
         .img1 { top: 8%; left: 5%; width: 220px; animation: float 6s ease-in-out infinite; }
         .img2 { top: 12%; right: 5%; width: 250px; animation: floatReverse 7s ease-in-out infinite; }
-        .img3 { bottom: 12%; left: 8%; width: 260px; animation: floatReverse 5s ease-in-out infinite; }
-        .img4 { bottom: 8%; right: 5%; width: 210px; animation: float 8s ease-in-out infinite; }
+        /* Ảnh 3: Dời xuống dưới và nhích vào giữa một chút */
+        .img3 { bottom: -2%; left: 20%; width: 260px; animation: floatReverse 5s ease-in-out infinite; }
+        /* Ảnh 4: Dời xuống dưới tràn ra ngoài (bị cắt nửa) và nhích vào giữa */
+        .img4 { bottom: -12%; right: 25%; width: 210px; animation: float 8s ease-in-out infinite; }
 
         /* ---------------- TRANG KẾT QUẢ ---------------- */
         #results-page { display: none; padding: 20px; max-width: 900px; margin: auto; }
@@ -165,10 +175,10 @@
     </div>
 
     <!-- CÁC HÌNH ẢNH LƯỢN LỜ -->
-    <img src="https://i.postimg.cc/dQm5nx18/a-(1).jpg" class="floating-img img1" alt="Decor 1">
-    <img src="https://i.postimg.cc/rsJgmK38/IMG-20250224-161455-(1).jpg" class="floating-img img2" alt="Decor 2">
-    <img src="https://i.postimg.cc/kMFTwp4S/IMG-20250405-115622-747-(1).webp" class="floating-img img3" alt="Decor 3">
-    <img src="https://i.postimg.cc/T2qtQ4wD/Pic-(1)-(1).jpg" class="floating-img img4" alt="Decor 4">
+    <img src="https://i.postimg.cc/pdDQ0mZB/a.jpg" class="floating-img img1" alt="Decor 1">
+    <img src="https://i.postimg.cc/ZqkFF8rg/Anh-3.jpg" class="floating-img img2" alt="Decor 2">
+    <img src="https://i.postimg.cc/SK0776Wr/IMG-20250224-161455.jpg" class="floating-img img3" alt="Decor 3">
+    <img src="https://i.postimg.cc/pdDQ0mZJ/Pic-(1).jpg" class="floating-img img4" alt="Decor 4">
 </div>
 
 <!-- ================= TRANG KẾT QUẢ ================= -->
@@ -206,7 +216,6 @@
 
 <!-- ================= JAVASCRIPT ================= -->
 <script>
-    // NHỚ THAY LẠI 3 LINK API CỦA BẠN VÀO ĐÂY NHÉ
     const API_VER1 = "https://script.google.com/macros/s/AKfycby4oTa2VsIc6PXC5XEwLhFyCEW9zcQDcNbE-EdmCO5MuEHArHVE_VNN7sPs3es814DX/exec";
     const API_VER2 = "https://script.google.com/macros/s/AKfycbwi8VZRPqBbA0zXiVQDu-bUREcPRxpsq69aMbxWL2TgQskOQaOVdselfjuXB8oW0Pm6ow/exec"; 
     const API_VER3 = "https://script.google.com/macros/s/AKfycbzh3bVDYF5o_ToASq6HkWPxJEgG5S5dSUU3luaKgGNUBGP6TKc36caTc3FSkfhBVBa61g/exec";
@@ -334,7 +343,7 @@
                         colValues.forEach((v, index) => {
                             const li = document.createElement('li');
                             li.style.animationDelay = `${index * 0.05}s`;
-                            // Đổi chữ Phản hồi thành icon
+                            // Đổi chữ Phản hồi thành icon 💬
                             li.innerHTML = `💬: ${v}`;
                             ul.appendChild(li);
                         });
