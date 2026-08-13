@@ -45,7 +45,7 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* ---------------- TRANG WELCOME ---------------- */
+       /* ---------------- TRANG WELCOME ---------------- */
         #welcome-page {
             min-height: 100vh;
             display: flex;
@@ -59,14 +59,23 @@
         .welcome-title {
             font-size: 3em;
             color: #d32f2f;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            /* Đã làm đậm bóng đổ để chữ nổi bật hơn */
+            text-shadow: 2px 3px 8px rgba(0,0,0,0.3);
+            /* Ép chữ luôn nằm lớp trên cùng (trên ảnh) */
+            position: relative;
+            z-index: 5;
             animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             margin-bottom: 10px;
             padding: 0 20px;
         }
         .welcome-subtitle {
             font-size: 1.2em;
-            color: #555;
+            color: #333; 
+            /* Thêm viền sáng và bóng đổ nhẹ cho câu mô tả */
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.8), 1px 2px 5px rgba(0,0,0,0.2);
+            /* Ép chữ luôn nằm lớp trên cùng */
+            position: relative;
+            z-index: 5;
             margin-bottom: 40px;
             animation: popIn 1s ease-out 0.3s forwards;
             opacity: 0;
@@ -93,18 +102,18 @@
         }
         .btn-ver:hover { transform: translateY(-5px) scale(1.05); }
         
-        /* Màu cho từng nút */
         .btn-ver1 { background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%); box-shadow: 0 10px 20px rgba(161, 140, 209, 0.4); }
         .btn-ver2 { background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4); }
         .btn-ver3 { background: linear-gradient(45deg, #ff0844 0%, #ffb199 100%); animation: pulseGlow 2s infinite; }
 
-        /* HÌNH ẢNH LƯỢN LỜ (Thay link ảnh của bạn vào src) */
-        .floating-img { position: absolute; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); z-index: 1; object-fit: cover;}
-        .img1 { top: 10%; left: 5%; width: 120px; height: 120px; animation: float 6s ease-in-out infinite; }
-        .img2 { top: 20%; right: 8%; width: 150px; height: 150px; animation: floatReverse 7s ease-in-out infinite; }
-        .img3 { bottom: 15%; left: 10%; width: 140px; height: 140px; animation: floatReverse 5s ease-in-out infinite; }
-        .img4 { bottom: 10%; right: 12%; width: 110px; height: 110px; animation: float 8s ease-in-out infinite; }
-
+        /* HÌNH ẢNH LƯỢN LỜ */
+        /* Thêm pointer-events: none để ảnh dù to cũng ko che mất nút bấm */
+        .floating-img { position: absolute; z-index: 1; object-fit: contain; pointer-events: none; }
+        /* Kích thước ảnh to gấp đôi (từ 180px - 220px) và ép dạt ra viền màn hình */
+        .img1 { top: 5%; left: -2%; width: 180px; height: 180px; animation: float 6s ease-in-out infinite; }
+        .img2 { top: 15%; right: -5%; width: 200px; height: 200px; animation: floatReverse 7s ease-in-out infinite; }
+        .img3 { bottom: 15%; left: -8%; width: 220px; height: 220px; animation: floatReverse 5s ease-in-out infinite; }
+        .img4 { bottom: 5%; right: -2%; width: 190px; height: 190px; animation: float 8s ease-in-out infinite; }
         /* ---------------- TRANG KẾT QUẢ ---------------- */
         #results-page { display: none; padding: 20px; max-width: 900px; margin: auto; }
         
@@ -166,10 +175,10 @@
     </div>
 
     <!-- CÁC HÌNH ẢNH LƯỢN LỜ: BẠN THAY ĐƯỜNG LINK ẢNH VÀO CHỖ CÓ CHỮ LINK_ANH NHÉ -->
-    <img src="https://i.postimg.cc/QthGFWCP/IMG-20250224-161455.jpg" class="floating-img img1" alt="Decor 1">
-    <img src="https://i.postimg.cc/vm8CMwNh/IMG-20250405-115622-747.webp" class="floating-img img2" alt="Decor 2">
-    <img src="https://i.postimg.cc/rm83VXZC/a.jpg" class="floating-img img3" alt="Decor 3">
-    <img src="https://i.postimg.cc/hjS6DWZ9/Pic-(1).jpg" class="floating-img img4" alt="Decor 4">
+    <img src="https://i.postimg.cc/pdDQ0mZB/a.jpg" class="floating-img img1" alt="Decor 1">
+    <img src="https://i.postimg.cc/ZqkFF8rg/Anh-3.jpg" class="floating-img img2" alt="Decor 2">
+    <img src="https://i.postimg.cc/SK0776Wr/IMG-20250224-161455.jpg" class="floating-img img3" alt="Decor 3">
+    <img src="https://i.postimg.cc/pdDQ0mZJ/Pic-(1).jpg" class="floating-img img4" alt="Decor 4">
 </div>
 
 <!-- ================= TRANG KẾT QUẢ ================= -->
