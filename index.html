@@ -166,10 +166,10 @@
     </div>
 
     <!-- CÁC HÌNH ẢNH LƯỢN LỜ: BẠN THAY ĐƯỜNG LINK ẢNH VÀO CHỖ CÓ CHỮ LINK_ANH NHÉ -->
-    <img src="https://photos.app.goo.gl/pAvk4HxcFfw8Rf9cA" class="floating-img img1" alt="Decor 1">
-    <img src="https://photos.app.goo.gl/Waz4y2M6LZhY6bps7" class="floating-img img2" alt="Decor 2">
-    <img src="https://photos.app.goo.gl/4VuEh5nuPVJLaMwaA" class="floating-img img3" alt="Decor 3">
-    <img src="https://photos.app.goo.gl/iFQPso3bR6D1KtCE6" class="floating-img img4" alt="Decor 4">
+    <img src="https://i.postimg.cc/QthGFWCP/IMG-20250224-161455.jpg" class="floating-img img1" alt="Decor 1">
+    <img src="https://i.postimg.cc/vm8CMwNh/IMG-20250405-115622-747.webp" class="floating-img img2" alt="Decor 2">
+    <img src="https://i.postimg.cc/rm83VXZC/a.jpg" class="floating-img img3" alt="Decor 3">
+    <img src="https://i.postimg.cc/hjS6DWZ9/Pic-(1).jpg" class="floating-img img4" alt="Decor 4">
 </div>
 
 <!-- ================= TRANG KẾT QUẢ ================= -->
@@ -253,40 +253,8 @@
         // Bắt đầu tải dữ liệu
         loadAllData();
         loadTop5();
-    } {
-        let titleElement = document.getElementById('page-title');
-        
-        if (ver === 'ver1') {
-            currentAPI = API_VER1;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 1 🎉";
-        } else if (ver === 'ver2') {
-            currentAPI = API_VER2;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 2 🎉";
-        } else {
-            currentAPI = API_VER3;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉";
-        }
-
-        // Báo lỗi nếu Ver 1, Ver 2 chưa được gắn link
-        if(currentAPI.includes("LINK_API")) {
-            alert("Oops! 🫣 Phiên bản này hiện chưa có dữ liệu. Bạn hãy gắn link API vào code nhé!");
-            return;
-        }
-
-        // Ẩn trang Welcome, Hiện trang Kết quả
-        document.getElementById('welcome-page').style.display = 'none';
-        document.getElementById('results-page').style.display = 'block';
-        
-        // Reset nội dung cũ để load mới
-        document.getElementById('all-results-container').innerHTML = "Đang tải dữ liệu, chờ xíu nha... ⏳";
-        document.getElementById('top5-container').innerHTML = "<li>Đang phân tích tín hiệu vũ trụ... 🚀</li>";
-        document.getElementById('match-result').innerHTML = "";
-        
-        // Bắt đầu tải dữ liệu
-        loadAllData();
-        loadTop5();
     }
-
+       
     // Hàm quay lại
     function goBack() {
         document.getElementById('results-page').style.display = 'none';
