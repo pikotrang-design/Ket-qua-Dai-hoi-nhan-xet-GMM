@@ -212,7 +212,7 @@
         .text-responses::-webkit-scrollbar { width: 8px; }
         .text-responses::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
         .text-responses::-webkit-scrollbar-thumb:hover { background: #aaa; }
-        /* =================================================================== */
+       /* =================================================================== */
         /* --------- TỐI ƯU GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE) ---------- */
         /* =================================================================== */
         @media (max-width: 768px) {
@@ -222,24 +222,22 @@
             .btn-ver { padding: 12px 30px; font-size: 1.1em; width: 80%; }
             .version-buttons { flex-direction: column; align-items: center; gap: 15px; }
 
-            /* 2. Thu nhỏ 4 ảnh lượn lờ và đẩy dạt ra sát mép viền điện thoại */
-            .img1 { width: 110px; top: 2%; left: -5%; }
-            .img2 { width: 120px; top: 10%; right: -10%; }
-            .img3 { width: 130px; bottom: 0%; left: -5%; }
-            .img4 { width: 110px; bottom: -5%; right: -10%; }
+            /* 2. Ảnh to hơn ~15%, xích vào gần trục giữa, ảnh 3 nâng lên trên */
+            .img1 { width: 125px; top: 2%; left: 8%; }
+            .img2 { width: 140px; top: 10%; right: 2%; }
+            .img3 { width: 150px; bottom: 15%; left: 10%; } /* Nâng lên khỏi trục ngang dưới */
+            .img4 { width: 125px; bottom: -2%; right: 5%; }
 
-            /* 3. Thu nhỏ các họa tiết icon (giảm một nửa kích thước) */
+            /* 3. Thu nhỏ các họa tiết icon (để không che chữ khi hiện đủ 14 cái) */
             .dd-star { width: 50px; height: 50px; }
             .dd-squiggle { width: 80px; height: 40px; }
             .dd-dots { width: 60px; height: 60px; }
             .dd-cross { width: 35px; height: 35px; }
             .dd-tri { width: 45px; height: 45px; }
             
-            /* 4. Ẩn bớt một nửa số lượng icon trên điện thoại cho bớt rối mắt */
-            /* Trên máy tính vẫn hiện đủ 14 icon, nhưng trên điện thoại chỉ hiện 7 cái */
-            .pos-8, .pos-9, .pos-10, .pos-11, .pos-12, .pos-13, .pos-14 { display: none !important; }
+            /* (Lệnh ẩn 7 icon đã được gỡ bỏ. Bây giờ đt sẽ hiện full 14 icon!) */
 
-            /* 5. Tinh chỉnh lại trang Kết Quả cho vừa màn hình đt */
+            /* 4. Tinh chỉnh lại trang Kết Quả cho vừa màn hình đt */
             #results-page { padding: 10px; }
             .header-title h1 { font-size: 1.6em; }
             .section { padding: 15px; }
