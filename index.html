@@ -309,7 +309,7 @@
     <button class="back-btn" onclick="goBack()">🔙 Quay lại trang chủ</button>
 
     <div class="header-title animate-pop">
-        <h1 id="page-title">🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉</h1>
+        <h1 id="page-title">🎉 Kết Quả Đại Hội Nhận Xét GMM | Ver 3 🎉</h1>
     </div>
     
     <!-- Toàn bộ kết quả -->
@@ -320,7 +320,7 @@
 
     <!-- Mục Top 5 (Đã được gắn ID để ẩn/hiện) -->
     <div class="section animate-pop" id="top5-section" style="animation-delay: 0.4s;">
-        <h2>🏆 Top 5 "Muốn Lắm Ạ" Nhất Nhóm 🌟</h2>
+        <h2>🏆 Top 5 Người Được Săn Đón Nhất Nhóm 🌟</h2>
         <ul class="top5-list" id="top5-container">
             <li>Đang phân tích tín hiệu vũ trụ... 🚀</li>
         </ul>
@@ -330,7 +330,7 @@
     <div class="section match-box animate-pop" style="animation-delay: 0.6s; text-align: center;">
         <h2>❤️ Trạm Match Bạn Chung Đường 💖</h2>
         <p>Nhập tên và mật mã bí mật của bạn để xem ai đã "match" với mình nhé! 🫣</p>
-        <input type="text" id="username" placeholder="Nhập tên của bạn (VD: Thúi Thúi)"><br>
+        <input type="text" id="username" placeholder="Nhập tên của bạn (VD: Kang Trim)"><br>
         <input type="password" id="password" placeholder="Mật mã bí mật"><br>
         <button class="btn-match" onclick="checkMatch()">Tra Cứu Tín Hiệu 📡</button>
         <div id="match-result"></div>
@@ -353,17 +353,17 @@
         
         if (ver === 'ver1') {
             currentAPI = API_VER1;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 1 🎉";
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhận Xét GMM | Ver 1 🎉";
             matchBox.style.display = 'none'; 
             top5Box.style.display = 'none'; // Ẩn Top 5 cho Ver 1
         } else if (ver === 'ver2') {
             currentAPI = API_VER2;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 2 🎉";
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhận Xét GMM | Ver 2 🎉";
             matchBox.style.display = 'none'; 
             top5Box.style.display = 'none'; // Ẩn Top 5 cho Ver 2
         } else {
             currentAPI = API_VER3;
-            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhân Xét GMM | Ver 3 🎉";
+            titleElement.innerText = "🎉 Kết Quả Đại Hội Nhận Xét GMM | Ver 3 🎉";
             matchBox.style.display = 'block'; 
             top5Box.style.display = 'block'; // Hiện Top 5 cho Ver 3
         }
@@ -467,7 +467,7 @@
                             const li = document.createElement('li');
                             li.style.animationDelay = `${index * 0.05}s`;
                             // Đổi chữ Phản hồi thành icon 💬
-                            li.innerHTML = `💬: ${v}`;
+                            li.innerHTML = `💬 ${v}`;
                             ul.appendChild(li);
                         });
                         block.appendChild(ul);
