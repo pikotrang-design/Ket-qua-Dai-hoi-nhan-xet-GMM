@@ -212,6 +212,45 @@
         .text-responses::-webkit-scrollbar { width: 8px; }
         .text-responses::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
         .text-responses::-webkit-scrollbar-thumb:hover { background: #aaa; }
+        /* =================================================================== */
+        /* --------- TỐI ƯU GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE) ---------- */
+        /* =================================================================== */
+        @media (max-width: 768px) {
+            /* 1. Thu nhỏ chữ ở trang Welcome cho vừa màn hình */
+            .welcome-title { font-size: 2.2em; padding: 0 10px; }
+            .welcome-subtitle { font-size: 1em; margin-bottom: 25px; }
+            .btn-ver { padding: 12px 30px; font-size: 1.1em; width: 80%; }
+            .version-buttons { flex-direction: column; align-items: center; gap: 15px; }
+
+            /* 2. Thu nhỏ 4 ảnh lượn lờ và đẩy dạt ra sát mép viền điện thoại */
+            .img1 { width: 110px; top: 2%; left: -5%; }
+            .img2 { width: 120px; top: 10%; right: -10%; }
+            .img3 { width: 130px; bottom: 0%; left: -5%; }
+            .img4 { width: 110px; bottom: -5%; right: -10%; }
+
+            /* 3. Thu nhỏ các họa tiết icon (giảm một nửa kích thước) */
+            .dd-star { width: 50px; height: 50px; }
+            .dd-squiggle { width: 80px; height: 40px; }
+            .dd-dots { width: 60px; height: 60px; }
+            .dd-cross { width: 35px; height: 35px; }
+            .dd-tri { width: 45px; height: 45px; }
+            
+            /* 4. Ẩn bớt một nửa số lượng icon trên điện thoại cho bớt rối mắt */
+            /* Trên máy tính vẫn hiện đủ 14 icon, nhưng trên điện thoại chỉ hiện 7 cái */
+            .pos-8, .pos-9, .pos-10, .pos-11, .pos-12, .pos-13, .pos-14 { display: none !important; }
+
+            /* 5. Tinh chỉnh lại trang Kết Quả cho vừa màn hình đt */
+            #results-page { padding: 10px; }
+            .header-title h1 { font-size: 1.6em; }
+            .section { padding: 15px; }
+            .section h2 { font-size: 1.3em; }
+            
+            /* Ép Top 5 xuống dòng nếu chữ quá dài */
+            .top5-list li { font-size: 1em; flex-direction: column; align-items: flex-start; gap: 5px; }
+            
+            /* Biểu đồ trên đt lùn lại 1 chút */
+            .chart-container { height: 250px; }
+        }
     </style>
 </head>
 <body>
