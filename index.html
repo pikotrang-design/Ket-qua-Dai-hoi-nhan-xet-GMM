@@ -433,7 +433,7 @@
         
         <!-- Thanh tìm kiếm (Menu xổ xuống) -->
         <div id="recap-nav-container" style="display: none;">
-            <h3 style="color: #1976d2; margin-bottom: 20px;">🔍 Chọn một cái tên để xem hành trình thăng hạng:</h3>
+            <h3 style="color: #1976d2; margin-bottom: 20px;">🔍 Chọn một cái tên để xem lại hành trình:</h3>
             <div id="recap-nav-list" class="quick-nav-list" style="border-top: none; padding-top: 0;"></div>
         </div>
     </div>
@@ -599,7 +599,9 @@
                             groupColor = getRandomColor();
                         }
                     }
-
+// THÊM DÒNG NÀY VÀO ĐỂ BỎ QUA GÓC BONUS TRONG TRANG RECAP
+                    if (groupName === "Góc Bonus") return;
+                    
                     if (!groupsData[groupName]) {
                         groupsData[groupName] = { color: groupColor, items: [] };
                     }
