@@ -599,8 +599,6 @@
                             groupColor = getRandomColor();
                         }
                     }
-// THÊM DÒNG NÀY VÀO ĐỂ BỎ QUA GÓC BONUS TRONG TRANG RECAP
-                    if (groupName === "Góc Bonus") return;
                     
                     if (!groupsData[groupName]) {
                         groupsData[groupName] = { color: groupColor, items: [] };
@@ -834,7 +832,8 @@
                             }
                         }
                     }
-
+// THÊM DÒNG NÀY ĐỂ BỎ QUA BONUS Ở RECAP
+        if (groupName === "Góc Bonus") return;
                     if (!globalRecapData[groupName]) {
                         globalRecapData[groupName] = { color: groupColor, ver1: [], ver2: [], ver3: [] };
                     }
