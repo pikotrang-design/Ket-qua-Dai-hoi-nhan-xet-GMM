@@ -484,12 +484,19 @@
                 // 1. BỘ LỌC TÊN ĐÃ ĐƯỢC NÂNG CẤP (Bắt từ khóa cực chuẩn)
                 const nameChecks = [
                     { key: "Đánh giá nhóm", keywords: ["gmm", "nhóm"], color: "#ff9800" },
+                    // Thêm 4 người bị thiếu ở Ver 1
+                    { key: "Nghi", keywords: ["nghi"], color: "#ff9a9e" }, 
+                    { key: "Min Ho", keywords: ["min ho", "minh huy", " huy "], color: "#a1c4fd" },
+                    { key: "Pu", keywords: [" pu", " pu ", "mapu", "phương"], color: "#5D3FD3" }, // Tím Huế
+                    { key: "Dín", keywords: ["dín"], color: "#ccff00" }, // Vàng chanh
+                    
                     { key: "Mint Thư", keywords: ["mint thư", "thư ", " thư"], color: "#e5d3b3" }, 
-                    { key: "All Inbox", keywords: ["all inbox"], color: "#000080" },
+                    { key: "All Inbox", keywords: ["all inbox", "thúy"], color: "#000080" },
                     { key: "Hiền Hồ", keywords: ["hiền hồ", "huyền"], color: "#800000" },
                     { key: "Châu Trinh", keywords: ["châu trinh", "trinh"], color: "#d3d3d3" },
                     { key: "Kang Trim", keywords: ["kang trim", "trang"], color: "#aec6cf" },
-                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "lê ", "ngân"], color: "#8b4513" },
+                    // Đã gỡ chữ "Lê" ra khỏi Sadness để tránh bắt nhầm người khác
+                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "khánh ngân", "ngân"], color: "#8b4513" }, 
                     { key: "Hannah Lê", keywords: ["hannah", "hân lê"], color: "#fdfd96" }, 
                     { key: "Cô Bi", keywords: ["cô bi", " bi "], color: "#40e0d0" },
                     { key: "Thúi Thúi", keywords: ["thúi", "thúy"], color: "#000080" },
@@ -498,17 +505,16 @@
                     { key: "Đăng Trương", keywords: ["đăng", "măng đinh"], color: "#ff007f" },
                     { key: "Nghĩa", keywords: ["nghĩa"], color: "#2196f3" },
                     { key: "Nam", keywords: ["nam"], color: "#2196f3" },
-                    // Đã gộp và bắt chính xác cụm từ cho Quỳnh Ku & Da An
-                    { key: "Quỳnh Ku", keywords: ["quỳnh ku", "quỳnh cu", "với cu", "cho cu", "về cu", "với ku", "cho ku", "về ku"], color: "#f8bbd0" },
+                    { key: "Quỳnh Ku", keywords: ["quỳnh ku", "quỳnh cu", "với cu", "cho cu", "về cu", "với ku", "cho ku", "về ku", " ku "], color: "#f8bbd0" },
                     { key: "Da An", keywords: ["da an", "gia an", "với an", "cho an", "về an"], color: "#9c27b0" }, 
-                    { key: "Kale", keywords: ["kale", "kha "], color: "#ff5722" }, 
-                    { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#607d8b" }, 
+                    // Cập nhật màu mới theo yêu cầu
+                    { key: "Kale", keywords: ["kale", "kha ", " kha"], color: "#000000" }, // Đen
+                    { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#77dd77" }, // Xanh lá pastel
                     { key: "Kabi", keywords: ["kabi", "huệ ân", " ân "], color: "#c3b1e1" }, 
-                    { key: "Phong Lê", keywords: ["phong"], color: "#607d8b" },
-                    // Tách riêng mục Bonus
+                    { key: "Phong Lê", keywords: ["phong lê", " phong "], color: "#607d8b" },
+                    
                     { key: "Góc Bonus", keywords: ["bonus"], color: "#e91e63" }
                 ];
-
                 const getRandomColor = () => {
                     const letters = '456789ABCDEF';
                     let color = '#';
