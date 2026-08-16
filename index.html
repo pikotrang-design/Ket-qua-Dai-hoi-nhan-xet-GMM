@@ -247,6 +247,83 @@
             /* Biểu đồ trên đt lùn lại 1 chút */
             .chart-container { height: 250px; }
         }
+        /* =================================================================== */
+        /* ------------- THANH TÌM KIẾM NHANH & PHÂN VÙNG KẾT QUẢ ------------ */
+        /* =================================================================== */
+        
+        /* Hộp Menu dropdown tìm kiếm */
+        .quick-nav-dropdown {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            margin-bottom: 35px;
+            border: 2px solid #1976d2;
+            transition: all 0.3s ease;
+        }
+        .quick-nav-title {
+            font-weight: 900;
+            color: #1976d2;
+            cursor: pointer;
+            list-style: none; /* Ẩn mũi tên mặc định */
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .quick-nav-title::-webkit-details-marker { display: none; }
+        .quick-nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #bbdefb;
+        }
+        .nav-btn {
+            padding: 8px 15px;
+            background: #fff;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+        .nav-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Cấu trúc từng phân vùng (Group) */
+        .group-section {
+            background: #fff;
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin-bottom: 45px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            /* Lệnh này siêu quan trọng: Tránh thanh tìm kiếm che mất tiêu đề khi lướt tới */
+            scroll-margin-top: 100px; 
+        }
+        .group-title {
+            font-size: 1.7em;
+            margin-top: 0;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .quick-nav-dropdown { padding: 12px; top: 10px; }
+            .quick-nav-title { font-size: 1em; }
+            .group-section { padding: 15px; scroll-margin-top: 80px; }
+            .group-title { font-size: 1.4em; }
+        }
     </style>
 </head>
 <body>
@@ -392,7 +469,7 @@
         document.getElementById('welcome-page').style.display = 'flex';
     }
 
-    async function loadAllData() {
+   async function loadAllData() {
         try {
             const response = await fetch(`${currentAPI}?action=getAllData`);
             const data = await response.json();
@@ -403,44 +480,161 @@
                 const headers = data.headers;
                 const rows = data.rows;
                 
+                // BỘ LỌC TÊN VÀ BẢNG MÀU SẮC BẠN YÊU CẦU
+                const nameChecks = [
+                    { key: "Đánh giá nhóm", keywords: ["gmm", "nhóm"], color: "#ff9800" }, // Cam
+                    { key: "Mint Thư", keywords: ["mint thư", "thư "], color: "#e5d3b3" }, // Màu be
+                    { key: "All Inbox", keywords: ["all inbox"], color: "#000080" }, // Xanh navy
+                    { key: "Hiền Hồ", keywords: ["hiền hồ", "huyền"], color: "#800000" }, // Đỏ đô
+                    { key: "Châu Trinh", keywords: ["châu trinh", "trinh"], color: "#d3d3d3" }, // Xám nhạt
+                    { key: "Kang Trim", keywords: ["kang trim", "trang"], color: "#aec6cf" }, // Xanh dương pastel
+                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "lê ", "ngân"], color: "#8b4513" }, // Nâu
+                    { key: "Hannah", keywords: ["hannah", "hân lê"], color: "#fdfd96" }, // Vàng pastel
+                    { key: "Cô Bi", keywords: ["cô bi", " bi "], color: "#40e0d0" }, // Xanh ngọc
+                    { key: "Thúi", keywords: ["thúi", "thúy"], color: "#000080" }, // Xanh navy
+                    { key: "Chi Mu (Mai)", keywords: ["chi mu", "mai", " mu "], color: "#006400" }, // Xanh lá đậm
+                    { key: "Trâm", keywords: ["trâm"], color: "#a5f2f3" }, // Icy Blue
+                    { key: "Đăng", keywords: ["đăng", "măng đinh"], color: "#ff007f" }, // Hồng Luminer
+                    { key: "Nghĩa", keywords: ["nghĩa"], color: "#2196f3" }, // Xanh nước biển
+                    { key: "Nam", keywords: ["nam"], color: "#2196f3" }, // Xanh nước biển
+                    { key: "Ku (Quỳnh Cu)", keywords: ["ku", "quỳnh cu", "cu "], color: "#f8bbd0" }, // Hồng pastel
+                    
+                    // Nhóm phụ trợ (phòng hờ trong form có nhắc tới)
+                    { key: "Da An", keywords: ["da an", "gia an", " an "], color: "#9c27b0" }, 
+                    { key: "Kale", keywords: ["kale", "kha "], color: "#ff5722" }, 
+                    { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#607d8b" }, 
+                    { key: "Kabi", keywords: ["kabi", "huệ ân", " ân "], color: "#8bc34a" } 
+                ];
+
+                // Hàm tạo màu ngẫu nhiên cho những người lạ
+                const getRandomColor = () => {
+                    const letters = '456789ABCDEF';
+                    let color = '#';
+                    for (let i = 0; i < 6; i++) color += letters[Math.floor(Math.random() * 12)];
+                    return color;
+                };
+
+                let groupsData = {};
+
+                // BƯỚC A: PHÂN LỌC DỮ LIỆU
                 headers.forEach((header, colIndex) => {
                     if (header.toLowerCase().includes("bạn tên là")) return;
 
                     let colValues = rows.map(r => r[colIndex]).filter(v => v !== "" && v !== null);
                     if (colValues.length === 0) return;
                     
-                    let isNumeric = colValues.every(v => !isNaN(v) && v !== "");
+                    let groupName = "Đánh giá nhóm";
+                    let groupColor = "#ff9800";
+                    let matched = false;
+
+                    // 1. Kiểm tra ưu tiên: Nếu có chữ GMM hoặc Nhóm -> Đánh giá nhóm
+                    if (header.toLowerCase().includes("nhóm") || header.toLowerCase().includes("gmm")) {
+                        matched = true;
+                    } else {
+                        // 2. Tra bảng dò tìm tên thành viên
+                        for (let check of nameChecks) {
+                            if (check.key === "Đánh giá nhóm") continue;
+                            if (check.keywords.some(kw => header.toLowerCase().includes(kw.toLowerCase()))) {
+                                groupName = check.key;
+                                groupColor = check.color;
+                                matched = true; break;
+                            }
+                        }
+                    }
+
+                    // 3. Nếu không nằm trong danh sách khai báo, tự bóc tách tên và gán màu ngẫu nhiên
+                    if (!matched) {
+                        let regex = /(?:với|cho)\s+([A-Za-zÀ-ỹ\s\-]+)/i;
+                        let match = header.match(regex);
+                        if (match) {
+                            groupName = match[1].replace("(Có cả khen cả góp ý nhé)", "").replace("?", "").trim();
+                            groupColor = getRandomColor();
+                        }
+                    }
+
+                    // Khởi tạo nhóm nếu chưa có
+                    if (!groupsData[groupName]) {
+                        groupsData[groupName] = { color: groupColor, items: [] };
+                    }
+                    groupsData[groupName].items.push({ header, colValues, colIndex });
+                });
+
+                // BƯỚC B: VẼ GIAO DIỆN & THANH TÌM KIẾM
+                let navHTML = '';
+                let contentHTML = '';
+                let chartConfigs = []; // Lưu cấu hình biểu đồ để vẽ sau
+
+                // Duyệt qua từng nhóm đã gom
+                Object.keys(groupsData).forEach(gName => {
+                    let gColor = groupsData[gName].color;
+                    let safeID = "group-" + gName.replace(/\s+/g, '-');
                     
-                    const block = document.createElement('div');
-                    block.className = 'result-block';
+                    // 1. Tạo nút bấm cho Thanh tìm kiếm (Có lệnh tự động thu gọn menu khi bấm)
+                    navHTML += `<button class="nav-btn" style="color: ${gColor}; border: 2px solid ${gColor}" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.getElementById('${safeID}').scrollIntoView({behavior: 'smooth'})">${gName}</button>`;
+
+                    // 2. Tạo Khối phân vùng cho người đó
+                    let sectionContent = `<div class="group-section animate-pop" id="${safeID}" style="border-left: 8px solid ${gColor};">`;
+                    sectionContent += `<h2 class="group-title" style="color: ${gColor}; border-bottom-color: ${gColor};">👤 Cụm: ${gName}</h2>`;
+
+                    // Nhét các câu hỏi của người đó vào trong
+                    groupsData[gName].items.forEach(item => {
+                        let isNumeric = item.colValues.every(v => !isNaN(v) && v !== "");
+                        
+                        let blockHTML = `<div class="result-block" style="border-left: 5px solid ${gColor};">`;
+                        const emojis = ['✨', '🔥', '💡', '📌', '🎯', '🍀'];
+                        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                        
+                        blockHTML += `<h3 style="color: ${gColor}">${randomEmoji} ${item.header}</h3>`;
+                        
+                        if (isNumeric) {
+                            let sum = item.colValues.reduce((a, b) => a + Number(b), 0);
+                            let avg = (sum / item.colValues.length).toFixed(1); 
+                            blockHTML += `<div class="avg-score">📈 Điểm trung bình: ${avg} / 10</div>`;
+                            blockHTML += `<div class="chart-container"><canvas id="chart-${item.colIndex}"></canvas></div>`;
+                            
+                            // Lưu lại biểu đồ để vẽ
+                            chartConfigs.push({ id: `chart-${item.colIndex}`, labels: item.colValues, color: gColor });
+                        } else {
+                            blockHTML += `<ul class="text-responses">`;
+                            item.colValues.forEach((v, index) => {
+                                blockHTML += `<li style="animation-delay: ${index * 0.05}s">💬 ${v}</li>`;
+                            });
+                            blockHTML += `</ul>`;
+                        }
+                        blockHTML += `</div>`;
+                        sectionContent += blockHTML;
+                    });
                     
-                    const emojis = ['✨', '🔥', '💡', '📌', '🎯', '🍀'];
-                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    sectionContent += `</div>`; // Đóng phân vùng
+                    contentHTML += sectionContent;
+                });
+
+                // Xử lý riêng nút Top 5 và Trạm Match cho VER 3
+                if (currentAPI === API_VER3) {
+                    navHTML += `<button class="nav-btn" style="color: #ff9800; border: 2px solid #ff9800" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.getElementById('top5-section').scrollIntoView({behavior: 'smooth'})">🌟 Top 5 Săn Đón</button>`;
+                    navHTML += `<button class="nav-btn" style="color: #e91e63; border: 2px solid #e91e63" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.querySelector('.match-box').scrollIntoView({behavior: 'smooth'})">💖 Trạm Match</button>`;
+                }
+
+                // Gắn khung Thanh tìm kiếm vào trang
+                let finalNavHTML = `
+                <details class="quick-nav-dropdown animate-pop">
+                    <summary class="quick-nav-title">🔍 Bấm vào đây để chọn phần muốn xem nhanh</summary>
+                    <div class="quick-nav-list">
+                        ${navHTML}
+                    </div>
+                </details>`;
+                
+                // Đẩy toàn bộ HTML lên màn hình
+                container.innerHTML = finalNavHTML + contentHTML;
+
+                // BƯỚC C: KÍCH HOẠT BIỂU ĐỒ BẰNG ĐÚNG MÀU CỦA PHÂN VÙNG
+                chartConfigs.forEach(cfg => {
+                    let counts = {};
+                    for(let i=1; i<=10; i++) counts[i] = 0;
+                    cfg.labels.forEach(v => { counts[Number(v)] = (counts[Number(v)] || 0) + 1; });
                     
-                    const title = document.createElement('h3');
-                    title.innerText = `${randomEmoji} ${header}`;
-                    block.appendChild(title);
-                    
-                    if (isNumeric) {
-                        let sum = colValues.reduce((a, b) => a + Number(b), 0);
-                        let avg = (sum / colValues.length).toFixed(1); 
-                        
-                        const avgText = document.createElement('div');
-                        avgText.className = 'avg-score';
-                        avgText.innerText = `📈 Điểm trung bình: ${avg} / 10`;
-                        block.appendChild(avgText);
-                        
-                        let counts = {};
-                        for(let i=1; i<=10; i++) counts[i] = 0;
-                        colValues.forEach(v => { counts[Number(v)] = (counts[Number(v)] || 0) + 1; });
-                        
-                        const chartDiv = document.createElement('div');
-                        chartDiv.className = 'chart-container';
-                        const canvas = document.createElement('canvas');
-                        chartDiv.appendChild(canvas);
-                        block.appendChild(chartDiv);
-                        container.appendChild(block);
-                        
+                    const canvas = document.getElementById(cfg.id);
+                    if (canvas) {
                         new Chart(canvas, {
                             type: 'bar',
                             data: {
@@ -448,35 +642,24 @@
                                 datasets: [{
                                     label: 'Số lượt',
                                     data: Object.values(counts),
-                                    backgroundColor: '#ff6b81', 
+                                    backgroundColor: cfg.color, // Lấy màu tương ứng
                                     borderRadius: 8
                                 }]
                             },
                             options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
+                                responsive: true, maintainAspectRatio: false,
                                 scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
                                 plugins: { legend: { display: false } },
                                 animation: { duration: 2000, easing: 'easeOutQuart' }
                             }
                         });
-                    } else {
-                        const ul = document.createElement('ul');
-                        ul.className = 'text-responses';
-                        colValues.forEach((v, index) => {
-                            const li = document.createElement('li');
-                            li.style.animationDelay = `${index * 0.05}s`;
-                            // Đổi chữ Phản hồi thành icon 💬
-                            li.innerHTML = `💬 ${v}`;
-                            ul.appendChild(li);
-                        });
-                        block.appendChild(ul);
-                        container.appendChild(block);
                     }
                 });
+
             }
         } catch (error) {
             document.getElementById('all-results-container').innerHTML = "Lỗi khi tải dữ liệu form. Bạn thử lại nhé!";
+            console.error(error);
         }
     }
 
