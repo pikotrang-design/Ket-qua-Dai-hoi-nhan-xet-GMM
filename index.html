@@ -481,22 +481,25 @@
                 const headers = data.headers;
                 const rows = data.rows;
                 
-                // 1. BỘ LỌC TÊN ĐÃ ĐƯỢC NÂNG CẤP (Bắt từ khóa cực chuẩn)
+                // 1. BỘ LỌC TÊN ĐÃ ĐƯỢC NÂNG CẤP (Đã fix lỗi "trải nghiệm" và đổi tên Sadness)
                 const nameChecks = [
                     { key: "Đánh giá nhóm", keywords: ["gmm", "nhóm"], color: "#ff9800" },
-                    // Thêm 4 người bị thiếu ở Ver 1
-                    { key: "Nghi", keywords: ["nghi"], color: "#ff9a9e" }, 
+                    // Đưa Góc Bonus lên đầu để ưu tiên quét trước, không bị bắt nhầm từ khóa
+                    { key: "Góc Bonus", keywords: ["bonus"], color: "#e91e63" },
+                    
+                    // Sửa từ khóa Nghi chặt chẽ hơn
+                    { key: "Nghi", keywords: ["với nghi", "cho nghi", "về nghi"], color: "#ff9a9e" }, 
                     { key: "Min Ho", keywords: ["min ho", "minh huy", " huy "], color: "#a1c4fd" },
-                    { key: "Pu", keywords: [" pu", " pu ", "mapu", "phương"], color: "#5D3FD3" }, // Tím Huế
-                    { key: "Dín", keywords: ["dín"], color: "#ccff00" }, // Vàng chanh
+                    { key: "Pu", keywords: [" pu", " pu ", "mapu", "phương"], color: "#5D3FD3" }, 
+                    { key: "Dín", keywords: ["dín"], color: "#ccff00" }, 
                     
                     { key: "Mint Thư", keywords: ["mint thư", "thư ", " thư"], color: "#e5d3b3" }, 
                     { key: "All Inbox", keywords: ["all inbox", "thúy"], color: "#000080" },
                     { key: "Hiền Hồ", keywords: ["hiền hồ", "huyền"], color: "#800000" },
                     { key: "Châu Trinh", keywords: ["châu trinh", "trinh"], color: "#d3d3d3" },
                     { key: "Kang Trim", keywords: ["kang trim", "trang"], color: "#aec6cf" },
-                    // Đã gỡ chữ "Lê" ra khỏi Sadness để tránh bắt nhầm người khác
-                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "khánh ngân", "ngân"], color: "#8b4513" }, 
+                    // Đã đổi tên thành Sadness
+                    { key: "Sadness", keywords: ["sát-nịt", "sadness", "khánh ngân", "ngân"], color: "#8b4513" }, 
                     { key: "Hannah Lê", keywords: ["hannah", "hân lê"], color: "#fdfd96" }, 
                     { key: "Cô Bi", keywords: ["cô bi", " bi "], color: "#40e0d0" },
                     { key: "Thúi Thúi", keywords: ["thúi", "thúy"], color: "#000080" },
@@ -507,13 +510,10 @@
                     { key: "Nam", keywords: ["nam"], color: "#2196f3" },
                     { key: "Quỳnh Ku", keywords: ["quỳnh ku", "quỳnh cu", "với cu", "cho cu", "về cu", "với ku", "cho ku", "về ku", " ku "], color: "#f8bbd0" },
                     { key: "Da An", keywords: ["da an", "gia an", "với an", "cho an", "về an"], color: "#9c27b0" }, 
-                    // Cập nhật màu mới theo yêu cầu
-                    { key: "Kale", keywords: ["kale", "kha ", " kha"], color: "#000000" }, // Đen
-                    { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#77dd77" }, // Xanh lá pastel
+                    { key: "Kale", keywords: ["kale", "kha ", " kha"], color: "#000000" }, 
+                    { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#77dd77" }, 
                     { key: "Kabi", keywords: ["kabi", "huệ ân", " ân "], color: "#c3b1e1" }, 
-                    { key: "Phong Lê", keywords: ["phong lê", " phong "], color: "#607d8b" },
-                    
-                    { key: "Góc Bonus", keywords: ["bonus"], color: "#e91e63" }
+                    { key: "Phong Lê", keywords: ["phong lê", " phong "], color: "#607d8b" }
                 ];
                 const getRandomColor = () => {
                     const letters = '456789ABCDEF';
