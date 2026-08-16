@@ -356,8 +356,10 @@
         <button class="btn-ver btn-ver1" onclick="loadVersion('ver1')">🌸 VER 1</button>
         <button class="btn-ver btn-ver2" onclick="loadVersion('ver2')">💦 VER 2</button>
         <button class="btn-ver btn-ver3" onclick="loadVersion('ver3')">🔥 VER 3</button>
-        <!-- Nút mới cực kỳ nổi bật dành riêng cho Recap -->
-        <button class="btn-ver btn-recap" style="background: linear-gradient(45deg, #ffd700 0%, #ff8c00 100%); width: 100%; margin-top: 15px; box-shadow: 0 10px 20px rgba(255, 140, 0, 0.4); text-transform: uppercase;" onclick="loadVersion('recap')">👑 Recap Cá Nhân</button>
+    </div>
+    <!-- Nút RECAP được tách riêng xuống dòng, gỡ bỏ width: 100% để bằng kích thước các nút trên -->
+    <div class="version-buttons" style="margin-top: 15px;">
+        <button class="btn-ver btn-recap" style="background: linear-gradient(45deg, #ffd700 0%, #ff8c00 100%); box-shadow: 0 10px 20px rgba(255, 140, 0, 0.4); text-transform: uppercase;" onclick="loadVersion('recap')">👑 RECAP</button>
     </div>
 
     <!-- CÁC HÌNH ẢNH LƯỢN LỜ -->
@@ -426,7 +428,7 @@
         
         <!-- Dòng chữ loading đợi gộp 3 Ver -->
         <div id="recap-loading" style="font-size: 1.2em; font-weight: bold; color: #ff9800; animation: pulseIcon 1.5s infinite;">
-            Đang dùng cỗ máy thời gian gom nhặt ký ức từ 3 Ver... ⏳<br><small style="color:#777; font-weight: normal;">(Dữ liệu hơi nặng, bạn chờ GMM một xíu nhé!)</small>
+            Đang dùng cỗ máy thời gian gom nhặt ký ức... ⏳<br><small style="color:#777; font-weight: normal;">(Dữ liệu hơi nặng, bạn chờ GMM một xíu nhé!)</small>
         </div>
         
         <!-- Thanh tìm kiếm (Menu xổ xuống) -->
@@ -909,7 +911,7 @@
         // Render Khung Biểu Đồ
         if(hasChart) {
             html += `<div class="result-block" style="border-left: 5px solid ${data.color}; text-align: center;">
-                        <h3 style="color: ${data.color}; -webkit-text-stroke: 0.5px ${darkColor};">📈 Hành trình thăng hạng điểm trung bình</h3>
+                        <h3 style="color: ${data.color}; -webkit-text-stroke: 0.5px ${darkColor};">Hành trình kết nối yêu </h3>
                         <div class="chart-container" style="height: 320px; width: 100%;"><canvas id="recapChart"></canvas></div>
                      </div>`;
         }
