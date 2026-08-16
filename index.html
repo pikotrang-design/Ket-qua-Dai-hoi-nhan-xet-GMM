@@ -324,6 +324,10 @@
             .group-section { padding: 15px; scroll-margin-top: 80px; }
             .group-title { font-size: 1.4em; }
         }
+      /* Tăng độ rõ nét cho các chữ màu sáng trên nền trắng */
+        .group-title, .result-block h3, .nav-btn {
+            text-shadow: 0.5px 0.5px 0 rgba(0,0,0,0.1), -0.5px -0.5px 0 rgba(0,0,0,0.1), 1px 1px 3px rgba(0,0,0,0.2);
+        }  
     </style>
 </head>
 <body>
@@ -481,29 +485,29 @@
                 const rows = data.rows;
                 
                 // BỘ LỌC TÊN VÀ BẢNG MÀU SẮC BẠN YÊU CẦU
+                // BỘ LỌC TÊN VÀ BẢNG MÀU SẮC ĐÃ ĐƯỢC GOM NHÓM LẠI
                 const nameChecks = [
-                    { key: "Đánh giá nhóm", keywords: ["gmm", "nhóm"], color: "#ff9800" }, // Cam
-                    { key: "Mint Thư", keywords: ["mint thư", "thư "], color: "#e5d3b3" }, // Màu be
-                    { key: "All Inbox", keywords: ["all inbox"], color: "#000080" }, // Xanh navy
-                    { key: "Hiền Hồ", keywords: ["hiền hồ", "huyền"], color: "#800000" }, // Đỏ đô
-                    { key: "Châu Trinh", keywords: ["châu trinh", "trinh"], color: "#d3d3d3" }, // Xám nhạt
-                    { key: "Kang Trim", keywords: ["kang trim", "trang"], color: "#aec6cf" }, // Xanh dương pastel
-                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "lê ", "ngân"], color: "#8b4513" }, // Nâu
-                    { key: "Hannah", keywords: ["hannah", "hân lê"], color: "#fdfd96" }, // Vàng pastel
-                    { key: "Cô Bi", keywords: ["cô bi", " bi "], color: "#40e0d0" }, // Xanh ngọc
-                    { key: "Thúi", keywords: ["thúi", "thúy"], color: "#000080" }, // Xanh navy
-                    { key: "Chi Mu (Mai)", keywords: ["chi mu", "mai", " mu "], color: "#006400" }, // Xanh lá đậm
-                    { key: "Trâm", keywords: ["trâm"], color: "#a5f2f3" }, // Icy Blue
-                    { key: "Đăng", keywords: ["đăng", "măng đinh"], color: "#ff007f" }, // Hồng Luminer
-                    { key: "Nghĩa", keywords: ["nghĩa"], color: "#2196f3" }, // Xanh nước biển
-                    { key: "Nam", keywords: ["nam"], color: "#2196f3" }, // Xanh nước biển
-                    { key: "Ku (Quỳnh Cu)", keywords: ["ku", "quỳnh cu", "cu "], color: "#f8bbd0" }, // Hồng pastel
-                    
-                    // Nhóm phụ trợ (phòng hờ trong form có nhắc tới)
+                    { key: "Đánh giá nhóm", keywords: ["gmm", "nhóm"], color: "#ff9800" },
+                    { key: "Mint Thư", keywords: ["mint thư", "thư ", " thư"], color: "#e5d3b3" }, 
+                    { key: "All Inbox", keywords: ["all inbox"], color: "#000080" },
+                    { key: "Hiền Hồ", keywords: ["hiền hồ", "huyền"], color: "#800000" },
+                    { key: "Châu Trinh", keywords: ["châu trinh", "trinh"], color: "#d3d3d3" },
+                    { key: "Kang Trim", keywords: ["kang trim", "trang"], color: "#aec6cf" },
+                    { key: "Sát-nịt (Sadness)", keywords: ["sát-nịt", "sadness", "lê ", "ngân"], color: "#8b4513" },
+                    { key: "Hannah Lê", keywords: ["hannah", "hân lê"], color: "#fdfd96" }, 
+                    { key: "Cô Bi", keywords: ["cô bi", " bi "], color: "#40e0d0" },
+                    { key: "Thúi Thúi", keywords: ["thúi", "thúy"], color: "#000080" },
+                    { key: "Chi Mu", keywords: ["chi mu", "mai", " mu "], color: "#006400" }, 
+                    { key: "Trâm", keywords: ["trâm"], color: "#a5f2f3" },
+                    { key: "Đăng Trương", keywords: ["đăng", "măng đinh"], color: "#ff007f" },
+                    { key: "Nghĩa", keywords: ["nghĩa"], color: "#2196f3" },
+                    { key: "Nam", keywords: ["nam"], color: "#2196f3" },
+                    { key: "Quỳnh Ku", keywords: ["ku", "quỳnh cu", "cu "], color: "#f8bbd0" },
                     { key: "Da An", keywords: ["da an", "gia an", " an "], color: "#9c27b0" }, 
                     { key: "Kale", keywords: ["kale", "kha "], color: "#ff5722" }, 
                     { key: "Hachiko", keywords: ["hachiko", "thuận"], color: "#607d8b" }, 
-                    { key: "Kabi", keywords: ["kabi", "huệ ân", " ân "], color: "#c3b1e1" } 
+                    { key: "Kabi", keywords: ["kabi", "huệ ân", " ân "], color: "#c3b1e1" }, 
+                    { key: "Phong Lê", keywords: ["phong"], color: "#607d8b" } 
                 ];
 
                 // Hàm tạo màu ngẫu nhiên cho những người lạ
@@ -574,7 +578,7 @@
 
                     // 2. Tạo Khối phân vùng cho người đó
                     let sectionContent = `<div class="group-section animate-pop" id="${safeID}" style="border-left: 8px solid ${gColor};">`;
-                    sectionContent += `<h2 class="group-title" style="color: ${gColor}; border-bottom-color: ${gColor};">👤 Cụm: ${gName}</h2>`;
+                    sectionContent += `<h2 class="group-title" style="color: ${gColor}; border-bottom-color: ${gColor};">👤 ${gName}</h2>`;
 
                     // Nhét các câu hỏi của người đó vào trong
                     groupsData[gName].items.forEach(item => {
@@ -612,7 +616,7 @@
                 // Xử lý riêng nút Top 5 và Trạm Match cho VER 3
                 if (currentAPI === API_VER3) {
                     navHTML += `<button class="nav-btn" style="color: #ff9800; border: 2px solid #ff9800" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.getElementById('top5-section').scrollIntoView({behavior: 'smooth'})">🌟 Top 5 Săn Đón</button>`;
-                    navHTML += `<button class="nav-btn" style="color: #e91e63; border: 2px solid #e91e63" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.querySelector('.match-box').scrollIntoView({behavior: 'smooth'})">💖 Trạm Match</button>`;
+                    navHTML += `<button class="nav-btn" style="color: #e91e63; border: 2px solid #e91e63" onclick="document.querySelector('.quick-nav-dropdown').removeAttribute('open'); document.querySelector('.match-box').scrollIntoView({behavior: 'smooth'})">💖 Trạm Match Bạn Chung </button>`;
                 }
 
                 // Gắn khung Thanh tìm kiếm vào trang
